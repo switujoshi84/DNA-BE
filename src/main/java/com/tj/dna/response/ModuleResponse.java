@@ -36,6 +36,11 @@ public class ModuleResponse {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
     }
+    
+    public ModuleResponse( int statusCode, String statusMessage) {
+        this.statusCode = String.valueOf(statusCode) ;
+        this.statusMessage = statusMessage;
+    }
 
     public ModuleResponse(String statusCode, String statusMessage, String statusMessageDetail) {
         this.statusCode = statusCode;

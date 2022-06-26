@@ -2,9 +2,12 @@ package com.tj.dna.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -58,4 +61,7 @@ public class Task {
 	@Column(name = "is_parent_row")
 	Boolean isParentRow;
 	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "file_id", nullable = false)
+	private File file;
 }
