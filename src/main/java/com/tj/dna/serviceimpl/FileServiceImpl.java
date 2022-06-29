@@ -45,6 +45,14 @@ public class FileServiceImpl implements FileService {
 		return this.fileRepsitory.save(file);
 	}
 
+	@Override
+	public ModuleResponse findAllFiles() {
+		List<File> files = this.fileRepsitory.findAll();
+		return new ModuleResponse("200","Successfully Fetched",files);
+	}
+	
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.tj.dna.serviceimpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import com.tj.dna.constant.AppConstant;
 import com.tj.dna.dto.FileImportRequestDto;
 import com.tj.dna.dto.SaveFileRequestDTO;
+import com.tj.dna.dto.TaskResponseDTO;
 import com.tj.dna.model.File;
 import com.tj.dna.model.Task;
 import com.tj.dna.repsitory.TaskRepository;
@@ -27,7 +29,6 @@ import com.tj.dna.utils.FileUtils;
 @Service
 public class TaskListServiceImpl {
 
-	
 	@Autowired
 	Gson gson;
 
@@ -36,22 +37,21 @@ public class TaskListServiceImpl {
 
 	@Autowired
 	ModelMapper modelMapper;
-	
+
 	@Autowired
 	TaskRepository taskRepository;
-	
+
 	@Autowired
 	FileServiceImpl fileService;
-	
+
 	public ModuleResponse uploadTaskListFileDetail(List<FileImportRequestDto> fileImportRequestDtos) {
 
-		
 		List<FileImportRequestDto> newList = new ArrayList<FileImportRequestDto>(0);
 		if (fileImportRequestDtos.size() > 0) {
 			for (FileImportRequestDto dto : fileImportRequestDtos) {
 				File file = fileService.saveFile(new SaveFileRequestDTO(dto.getChipNumber()));
-				if(file == null) {
-					throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR,"Error While Saving File");
+				if (file == null) {
+					throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error While Saving File");
 				}
 				if (dto.getRepeat().equals(AppConstant.OPTION_1)) {
 					String MRN = dto.getMRN();
@@ -67,11 +67,11 @@ public class TaskListServiceImpl {
 			}
 
 		}
-		
+
 		Task[] taskDomain = null;
 		taskDomain = modelMapper.map(newList, Task[].class);
 		List<Task> taskDomains = Arrays.asList(taskDomain);
-		taskDomains.forEach(d->{
+		taskDomains.forEach(d -> {
 			d.setId(null);
 		});
 		this.taskRepository.saveAll(taskDomains);
@@ -90,6 +90,20 @@ public class TaskListServiceImpl {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public ModuleResponse findTaskByFileId(Long fileId) {
+		List<Task> taskList = this.taskRepository.findByFileFileId(fileId);
+		ModelMapper mapper = new ModelMapper();
+		TaskResponseDTO[] list = mapper.map(taskList, TaskResponseDTO[].class);
+		return new ModuleResponse("200","Fetched Sucessfully",list);
+
+//		modelMapper.addMappings(new PropertyMap<List<Task>, TaskResponseDTO[]>() {
+//			@Override
+//			protected void configure() {
+//				sour
+//			}
+//		});
 	}
 
 }
