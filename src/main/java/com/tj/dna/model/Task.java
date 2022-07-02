@@ -1,5 +1,7 @@
 package com.tj.dna.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,6 +62,26 @@ public class Task {
 	String MRN;
 	@Column(name = "is_parent_row")
 	Boolean isParentRow;
+	@Column(name = "beadchip_position")
+	String breadChipPosition;
+	@Column(name = "surgical_acc_num")
+	String surgicalAccNum;
+	@Column(name="cellularity")
+	String cellularity;
+	@Column(name="duplicate")
+	Boolean duplicate;
+	@Column(name = "tissue_review_pathologist")
+	String tissueReviewPathologist;
+	@Column(name = "h20")
+	BigDecimal h20;
+	@Column(name = "qubit")
+	BigDecimal qubit;
+	@Column(name = "dna")
+	BigDecimal dna;
+	@Column(name = "total_rna")
+	BigDecimal totalRNA;
+	@Column(name = "processed")
+	Boolean processed;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "file_id", nullable = false)

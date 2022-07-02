@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.tj.dna.constant.AppConstant;
 import com.tj.dna.dto.FileImportRequestDto;
 import com.tj.dna.dto.SaveFileRequestDTO;
+import com.tj.dna.dto.TaskRequestDTO;
 import com.tj.dna.dto.TaskResponseDTO;
 import com.tj.dna.model.File;
 import com.tj.dna.model.Task;
@@ -48,8 +49,9 @@ public class TaskListServiceImpl {
 
 		List<FileImportRequestDto> newList = new ArrayList<FileImportRequestDto>(0);
 		if (fileImportRequestDtos.size() > 0) {
+			File file = fileService.saveFile(new SaveFileRequestDTO(fileImportRequestDtos.get(0).getChipNumber()));
 			for (FileImportRequestDto dto : fileImportRequestDtos) {
-				File file = fileService.saveFile(new SaveFileRequestDTO(dto.getChipNumber()));
+
 				if (file == null) {
 					throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error While Saving File");
 				}
@@ -57,11 +59,13 @@ public class TaskListServiceImpl {
 					String MRN = dto.getMRN();
 					dto.setMRN(MRN + "_A");
 					dto.setFileId(file.getFileId());
+					dto.setDuplicate(Boolean.TRUE);
 					newList.add(this.copyUtil.copyFileImportDTO(dto));
 					dto.setMRN(MRN + "_B");
 					newList.add(this.copyUtil.copyFileImportDTO(dto));
 				} else {
 					dto.setFileId(file.getFileId());
+					dto.setDuplicate(Boolean.FALSE);
 					newList.add(this.copyUtil.copyFileImportDTO(dto));
 				}
 			}
@@ -96,14 +100,17 @@ public class TaskListServiceImpl {
 		List<Task> taskList = this.taskRepository.findByFileFileId(fileId);
 		ModelMapper mapper = new ModelMapper();
 		TaskResponseDTO[] list = mapper.map(taskList, TaskResponseDTO[].class);
-		return new ModuleResponse("200","Fetched Sucessfully",list);
+		return new ModuleResponse("200", "Fetched Sucessfully", list);
 
-//		modelMapper.addMappings(new PropertyMap<List<Task>, TaskResponseDTO[]>() {
-//			@Override
-//			protected void configure() {
-//				sour
-//			}
-//		});
+	}
+
+	public ModuleResponse updateTaskList(List<TaskRequestDTO> taskRequestDTOs) {
+		this.taskRepository.deleteByFileFileId(taskRequestDTOs.get(0).getFileId());
+		ModelMapper mapper = new ModelMapper();
+		Task[] list = mapper.map(taskRequestDTOs, Task[].class);
+		List<Task> taskDomains = Arrays.asList(list);
+		this.taskRepository.saveAll(taskDomains);
+		return new ModuleResponse(HttpStatus.OK.value(), "Updated Sucessfully");
 	}
 
 }

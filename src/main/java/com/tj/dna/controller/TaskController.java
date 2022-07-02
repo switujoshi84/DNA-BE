@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tj.dna.dto.FileImportRequestDto;
+import com.tj.dna.dto.TaskRequestDTO;
 import com.tj.dna.dto.TaskResponseDTO;
 import com.tj.dna.response.ModuleResponse;
 import com.tj.dna.serviceimpl.TaskListServiceImpl;
@@ -43,5 +45,11 @@ public class TaskController {
 	public
 	@ResponseBody ModuleResponse findTaskByFileId(@PathVariable("fileId") Long fileId) {
 		return this.listService.findTaskByFileId(fileId);
+	}
+	
+	@PutMapping("/update")
+	public
+	@ResponseBody ModuleResponse updateTaskList(@RequestBody List<TaskRequestDTO> taskRequestDTOs) {
+		return this.listService.updateTaskList(taskRequestDTOs);
 	}
 }

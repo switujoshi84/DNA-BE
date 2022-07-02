@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-@Getter
+	@Getter
 @Setter
 public class FileImportRequestDto {
 
@@ -25,16 +25,17 @@ public class FileImportRequestDto {
 	private String location;
 	private String molecularFinalResults;
 	private String nextAction;
-	private String order;
+	private String orderNum;
 	private String originalDiagnosis;
 	private String ptName;
 	private String specimen;
 	private String status;
 	private String testCode;
-	private String tissueReview;
+	private String tissueReviewPathologist;
 	private String toRerun;
-	private Double tumorCellularity;
+	private Double cellularity;
 	private String repeat;
+	private Boolean duplicate;
 	private String chipNumber;
 	private Long fileId;
 
