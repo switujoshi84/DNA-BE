@@ -1,6 +1,7 @@
 package com.tj.dna.serviceimpl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -55,7 +56,7 @@ public class TaskListServiceImpl {
 				if (file == null) {
 					throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error While Saving File");
 				}
-				if (dto.getRepeat().equals(AppConstant.OPTION_1)) {
+					if (dto.getRepeat().equals(AppConstant.OPTION_1)) {
 					String MRN = dto.getMRN();
 					dto.setMRN(MRN + "_A");
 					dto.setFileId(file.getFileId());
@@ -77,6 +78,7 @@ public class TaskListServiceImpl {
 		List<Task> taskDomains = Arrays.asList(taskDomain);
 		taskDomains.forEach(d -> {
 			d.setId(null);
+			d.setTotalRNA(new BigDecimal("250.00"));
 		});
 		this.taskRepository.saveAll(taskDomains);
 		return new ModuleResponse(HttpStatus.OK.value(), "Sucessfully Saved");
@@ -104,6 +106,13 @@ public class TaskListServiceImpl {
 
 	}
 
+	public List<TaskResponseDTO> findTasksByFileId(Long fileId) {
+		List<Task> taskList = this.taskRepository.findByFileFileId(fileId);
+		ModelMapper mapper = new ModelMapper();
+		TaskResponseDTO[] list = mapper.map(taskList, TaskResponseDTO[].class);
+		return Arrays.asList(list);
+
+	}
 	public ModuleResponse updateTaskList(List<TaskRequestDTO> taskRequestDTOs) {
 		this.taskRepository.deleteByFileFileId(taskRequestDTOs.get(0).getFileId());
 		ModelMapper mapper = new ModelMapper();
@@ -113,4 +122,7 @@ public class TaskListServiceImpl {
 		return new ModuleResponse(HttpStatus.OK.value(), "Updated Sucessfully");
 	}
 
+	public void updateTaskList(Long taskId) {
+		this.taskRepository.updateProcessedById(taskId);
+	}
 }

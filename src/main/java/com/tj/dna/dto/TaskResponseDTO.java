@@ -37,15 +37,16 @@ public class TaskResponseDTO {
 	private String repeat;
 	private String chipNumber;
 	private Long fileId;
-	String fileName;
-	String breadChipPosition;
-	String surgicalAccNum;
-	String cellularity;
-	Boolean duplicate;
-	String tissueReviewPathologist;
-	BigDecimal h20 = new BigDecimal("0.0");
-	BigDecimal qubit  = new BigDecimal("0.0");
-	BigDecimal dna  = new BigDecimal("0.0");
-	BigDecimal totalRNA  = new BigDecimal("0.0");
-	Boolean processed;
+	private String fileName;
+	private String breadChipPosition;
+	private String surgicalAccNum;
+	private String cellularity;
+	private Boolean duplicate;
+	private String tissueReviewPathologist;
+	private BigDecimal h20 = new BigDecimal("0.0");
+	private BigDecimal qubit  = new BigDecimal("0.0");
+	private BigDecimal dna  = new BigDecimal("0.0");
+	private BigDecimal totalRNA  = new BigDecimal("0.0");
+	private Boolean processed;
+	private Long id ;
 }
