@@ -38,5 +38,4 @@ public class FileImportRequestDto {
 	private Boolean duplicate;
 	private String chipNumber;
 	private Long fileId;
-
 }

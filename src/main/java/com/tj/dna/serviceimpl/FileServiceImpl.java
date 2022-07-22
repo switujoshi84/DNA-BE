@@ -3,6 +3,7 @@ package com.tj.dna.serviceimpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -48,6 +49,7 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public ModuleResponse findAllFiles() {
 		List<File> files = this.fileRepsitory.findAll();
+		Collections.reverse(files);
 		return new ModuleResponse("200","Successfully Fetched",files);
 	}
 	

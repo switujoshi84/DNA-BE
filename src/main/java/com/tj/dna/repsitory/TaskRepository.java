@@ -21,7 +21,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	public void deleteByFileFileId(Long fileId);
 
 	@Modifying
-	@Transactional()
+	@Transactional()	
 	@Query(value = "update task set processed = 1 where id = :id ", nativeQuery = true )
 	public void updateProcessedById(@Param("id") Long id);
 }
